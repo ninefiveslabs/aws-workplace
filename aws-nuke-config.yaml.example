@@ -1,0 +1,58 @@
+# This is an example aws-nuke config file that can be used as a template.
+# You need to fill the "filters" section with your own resources
+# that you want to preserve. You can get this list by running aws-nuke
+# in dry-run mode and writing down the resources that shouldn't be
+# removed.
+
+regions:
+  - us-east-1
+  - global
+
+resource-types:
+  excludes:
+    # deprecated ML resources throw warnings, exclude them
+    - 'MachineLearningEvaluation'
+    - 'MachineLearningDataSource'
+    - 'MachineLearningBranchPrediction'
+    - 'MachineLearningMLModel'
+
+# a blacklist section is required, use a dummy account number
+account-blacklist:
+  - "999999999999"
+
+accounts:
+  "111111111111":
+    filters: # don't nuke these specific resources
+      IAMUser:
+        - 'user'
+      IAMLoginProfile:
+        - 'user'
+      IAMUserPolicyAttachment:
+        - 'user -> AdministratorAccess'
+        - 'user -> IAMUserChangePassword'
+      IAMUserAccessKey:
+        - 'user -> AKIA4444444444444444'
+      IAMVirtualMFADevice:
+        - 'arn:aws:iam::111111111111:mfa/user'
+      IAMRole:
+        - 'OrganizationAccountAccessRole'
+      IAMRolePolicy:
+        - 'OrganizationAccountAccessRole -> AdministratorAccess'
+# us-east-1
+      EC2VPC:
+        - 'vpc-11111111'
+      EC2DHCPOption:
+        - 'dopt-11111111'
+      EC2Subnet:
+        - 'subnet-11111111'
+        - 'subnet-22222222'
+        - 'subnet-33333333'
+        - 'subnet-44444444'
+        - 'subnet-55555555'
+        - 'subnet-66666666'
+      EC2RouteTable:
+        - 'rtb-11111111'
+      EC2InternetGateway:
+        - 'igw-111111111
+      EC2InternetGatewayAttachment:
+        - 'igw-111111111-> vpc-11111111'
