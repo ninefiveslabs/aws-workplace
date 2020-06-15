@@ -3,6 +3,7 @@
 MYDIR=$(readlink -f "$(dirname "${BASH_SOURCE[0]}")")
 "${MYDIR}/setup.sh"
 OLDPATH="${PATH}"
+OLDPS1="${PS1}"
 
 function cleanup() {
     echo 'Cleaning up after error...'
@@ -25,9 +26,9 @@ if [ x"${?}" == x"0" ]; then
     export 'AWS_SESSION_TOKEN'
     # shellcheck disable=SC2034
     export 'AWS_DEFAULT_REGION'
-    export OLDPS1="${PS1}"
     export PS1="AWS ${PS1}"
     export 'OLDPATH'
+    export 'OLDPS1'
 else
     echo 'Session creation failed.'
     cleanup
